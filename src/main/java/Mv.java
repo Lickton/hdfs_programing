@@ -21,8 +21,8 @@ public class Mv extends Command {
     public void move(String[] argv) throws IOException {
         this.argv = argv;
         Command cf = new Command();
-        cf.checkIllegalArguments(4, 4, argv);
         cf.parse(argv);
+        cf.checkIllegalArguments(2, 2, argv);
         String src = argv[argv.length - 2];
         String dst = argv[argv.length - 1];
         moveFile(src, dst);
@@ -47,7 +47,7 @@ public class Mv extends Command {
             throw new PathIsDirectoryException(src.toString());
         }
 
-        if (this.fs.exists(dst)) {
+        if (this.fs.exists(dst) && !this.fs.isDirectory(dst)) {
             displayErrorFileExists(dst.toString());
             throw new FileExistsException(dst.toString());
         }

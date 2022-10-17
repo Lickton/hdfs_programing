@@ -16,8 +16,8 @@ public class Rm extends Command {
 
     public void remove(String[] argv) throws IOException {
         Command cf = new Command();
-        cf.checkIllegalArguments(3, 4, argv);
         cf.parse(argv);
+        cf.checkIllegalArguments(1, (cf.getOpt("-r") ? 2 : 1), argv);
         this.deleteDirectory = cf.getOpt("-r");
         removeFile(argv[argv.length - 1]);
     }

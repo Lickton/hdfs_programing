@@ -16,7 +16,7 @@ public class Find extends Command {
     public void find(String[] argv) throws IOException {
         this.argv = argv;
         Command cf = new Command();
-        cf.checkIllegalArguments(3, 3, argv);
+        cf.checkIllegalArguments(1, 1, argv);
         cf.parse(argv);
         String path = argv[argv.length - 1];
 
@@ -39,7 +39,7 @@ public class Find extends Command {
 
         while (iterator.hasNext()) {
             FileStatus fileStatus = iterator.next();
-            String info = father + fileStatus.getPath().getName();
+            String info = father + (father.endsWith("/") ? "" : "/") + fileStatus.getPath().getName();
 
             System.out.println(info);
 

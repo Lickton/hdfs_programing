@@ -21,7 +21,7 @@ public class HShell {
         init();
         String command = sc.nextLine();
         String[] argv = command.split(" ");
-
+        check(argv);
         switch (argv[1]) {
             case "-cp":
                 Cp cp = new Cp(fs);

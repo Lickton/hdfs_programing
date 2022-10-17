@@ -33,10 +33,10 @@ public class Command {
     }
 
     public void checkIllegalArguments(int minPar, int maxPar, String[] argv) {
-        if (argv.length < minPar) {
+        if (argv.length - 2 < minPar) {
             throw new CommandFormat.NotEnoughArgumentsException(minPar, 0);
         }
-        if (argv.length > maxPar) {
+        if (argv.length -2 > maxPar) {
             throw new CommandFormat.TooManyArgumentsException(minPar, isRecursion ? argv.length - 3 : argv.length - 2);
         }
     }

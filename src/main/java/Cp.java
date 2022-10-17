@@ -1,6 +1,4 @@
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.fs.PathIsDirectoryException;
+import org.apache.hadoop.fs.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,8 +17,8 @@ public class Cp extends Command {
 
     public void upload(String[] argv) throws IOException {
         Command cf = new Command();
-        cf.checkIllegalArguments(4, 5, argv);
         cf.parse(argv);
+        cf.checkIllegalArguments(2, (cf.getOpt("-r") ? 3 : 2), argv);
         this.uploadDirectory = cf.getOpt("-r");
         uploadFile(argv[argv.length - 2], argv[argv.length - 1]);
     }
@@ -39,8 +37,16 @@ public class Cp extends Command {
             throw new PathIsDirectoryException(src);
         }
 
+        if (!this.fs.exists(remote)) {
+            this.fs.mkdirs(remote);
+        }
+
+        if (this.fs.exists(remote)) {
+            throw new FileAlreadyExistsException(dst + FindLocal.getName());
+        }
+
         if (!this.fs.isDirectory(remote)) {
-            this.fs.create(remote);
+            throw new PathIsNotDirectoryException(dst);
         }
 
         this.fs.copyFromLocalFile(local, remote);
